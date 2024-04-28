@@ -7,7 +7,7 @@ pipeline {
 				echo "Installing all required depdendencies .."
 				git branch: "main", url: "https://github.com/mtararujs/python-greetings"
 				bat "dir"
-				bat "pip3 install -r requirements.txt"
+				bat "pip install -r requirements.txt"
 			}
 		}
 		stage('deploy-to-dev') {
@@ -71,12 +71,14 @@ pipeline {
 
 def deploy(String environment, int port) {
 	echo "Deployment to ${environment} has started .."
+	git branch: "main", url: "https://github.com/mtararujs/python-greetings"
 	bat "pm2 delete greetings-app-${environment} || exit 0"
 	bat "pm2 start app.py --name greetings-app-${environment} --port ${port}"
 }
 
 def test(String environment) {
 	echo "Testing on ${environment} has started .."
+	git branch: "main", url: "https://github.com/mtararujs/course-js-api-framework"
 	bat "npm install"
 	bat "npm run greetings greetings_${environment}"
 }
